@@ -90,7 +90,37 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # Initialize the frontier with the start state and an empty path
+    frontier = util.Stack()
+    start_state = problem.getStartState()
+    # We store tuples of (current_state, actions_to_reach_state)
+    frontier.push((start_state, []))
+    
+    # Keep track of visited states to avoid cycles and redundant work
+    visited = set()
+
+    while not frontier.isEmpty():
+        # Pop the deepest node from the stack
+        current_state, actions = frontier.pop()
+
+        # Goal check
+        if problem.isGoalState(current_state):
+            return actions
+
+        # Graph Search: Only expand if the state hasn't been visited
+        if current_state not in visited:
+            visited.add(current_state)
+            
+            # Expand successors
+            for successor, action, cost in problem.getSuccessors(current_state):
+                if successor not in visited:
+                    # Create the new path list for this successor
+                    new_actions = actions + [action]
+                    frontier.push((successor, new_actions))
+
+    # Return empty list if no solution is found
+    return []
+    #util.raiseNotDefined()
 
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
