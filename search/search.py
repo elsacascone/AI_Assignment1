@@ -125,7 +125,31 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    # BFS uses a Queue (First-In, First-Out)
+    frontier = util.Queue()
+    start_state = problem.getStartState()
+    frontier.push((start_state, []))
+    
+    # Graph search: keep track of visited states
+    visited = []
+
+    while not frontier.isEmpty():
+        current_state, actions = frontier.pop()
+
+        if problem.isGoalState(current_state):
+            return actions
+
+        if current_state not in visited:
+            visited.append(current_state)
+            
+            for successor, action, cost in problem.getSuccessors(current_state):
+                if successor not in visited:
+                    # Create the new path for this successor
+                    new_actions = actions + [action]
+                    frontier.push((successor, new_actions))
+
+    return []
+    #util.raiseNotDefined()
 
 def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
     """Search the node of least total cost first."""
